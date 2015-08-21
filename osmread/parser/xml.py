@@ -36,7 +36,7 @@ class XmlParser(Parser):
             if event == 'start':
                 attrs = elem.attrib
                 if elem.tag in ('node', 'way', 'relation'):
-                    _id = long(attrs['id'])
+                    _id = attrs['id']
                     _version = int(attrs['version'])
                     _changeset = int(attrs['changeset'])
                     # TODO: improve timestamp parsing - dateutil too slow
@@ -72,21 +72,21 @@ class XmlParser(Parser):
                         _members = []
 
                 elif elem.tag == 'tag':
-                    _tags[unicode(attrs['k'])] = unicode(attrs['v'])
+                    _tags[str(attrs['k'])] = str(attrs['v'])
 
                 elif elem.tag == 'nd':
-                    _nodes.append(long(attrs['ref']))
+                    _nodes.append(attrs['ref'])
 
                 elif elem.tag == 'member':
                     _members.append(
                         RelationMember(
-                            unicode(attrs['role']),
+                            attrs['role'],
                             {
                                 'node': Node,
                                 'way': Way,
                                 'relation': Relation
                             }[attrs['type']],
-                            long(attrs['ref'])
+                            attrs['ref']
                         )
                     )
 
