@@ -1,3 +1,4 @@
+import sys
 from lxml.etree import iterparse
 from datetime import datetime
 from time import mktime
@@ -5,6 +6,10 @@ from time import mktime
 from osmread.parser import Parser
 from osmread.elements import Node, Way, Relation, RelationMember
 
+# Support for Python 3.x & 2.x
+if sys.version_info > (3,):
+    long = int
+    unicode = str
 
 class XmlParser(Parser):
 
@@ -36,7 +41,7 @@ class XmlParser(Parser):
             if event == 'start':
                 attrs = elem.attrib
                 if elem.tag in ('node', 'way', 'relation'):
-                    _id = attrs['id']
+                    _id = long(attrs['id'])
                     _version = int(attrs['version'])
                     _changeset = int(attrs['changeset'])
                     # TODO: improve timestamp parsing - dateutil too slow
@@ -72,21 +77,21 @@ class XmlParser(Parser):
                         _members = []
 
                 elif elem.tag == 'tag':
-                    _tags[str(attrs['k'])] = str(attrs['v'])
+                    _tags[unicode(attrs['k'])] = unicode(attrs['v'])
 
                 elif elem.tag == 'nd':
-                    _nodes.append(attrs['ref'])
+                    _nodes.append(long(attrs['ref']))
 
                 elif elem.tag == 'member':
                     _members.append(
                         RelationMember(
-                            attrs['role'],
+                            unicode(attrs['role']),
                             {
                                 'node': Node,
                                 'way': Way,
                                 'relation': Relation
                             }[attrs['type']],
-                            attrs['ref']
+                            long(attrs['ref'])
                         )
                     )
 
