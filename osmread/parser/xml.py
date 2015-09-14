@@ -1,3 +1,4 @@
+import sys
 from lxml.etree import iterparse
 from datetime import datetime
 from time import mktime
@@ -5,6 +6,10 @@ from time import mktime
 from osmread.parser import Parser
 from osmread.elements import Node, Way, Relation, RelationMember
 
+# Support for Python 3.x & 2.x
+if sys.version_info > (3,):
+    long = int
+    unicode = str
 
 class XmlParser(Parser):
 
