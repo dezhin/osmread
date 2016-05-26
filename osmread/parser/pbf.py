@@ -1,9 +1,15 @@
 from struct import unpack
 import zlib
+import sys
 
 from osmread.parser import Parser
 from osmread.elements import Node, Way, Relation, RelationMember
-from osmread.protobuf.osm_pb2 import BlobHeader, Blob, HeaderBlock, PrimitiveBlock
+if sys.version_info > (3,):
+    from osmread.protobuf.fileformat_pb2 import BlobHeader, Blob
+    from osmread.protobuf.osmformat_pb2 import HeaderBlock, PrimitiveBlock
+    long = int
+else:
+    from osmread.protobuf.osm_pb2 import BlobHeader, Blob, HeaderBlock, PrimitiveBlock
 
 
 class PBFException(Exception):
@@ -106,8 +112,8 @@ class PbfParser(Parser):
                 timestamp=int(e.info.timestamp),
                 uid=e.info.uid,
                 tags=self.__parse_tags(e, pblock),
-                lon=float(e.lon * granularity + lon_offset) / 1000000000L,
-                lat=float(e.lat * granularity + lat_offset) / 1000000000L,
+                lon=float(e.lon * granularity + lon_offset) / long(1000000000),
+                lat=float(e.lat * granularity + lat_offset) / long(1000000000),
             )
 
     def __parse_dense(self, pblock, data):
@@ -153,8 +159,8 @@ class PbfParser(Parser):
                 timestamp=int(cts * timestamp_granularity / 1000),
                 uid=cuid,
                 tags=tags,
-                lon=float(clon * node_granularity + lon_offset) / 1000000000L,
-                lat=float(clat * node_granularity + lat_offset) / 1000000000L,
+                lon=float(clon * node_granularity + lon_offset) / long(1000000000),
+                lat=float(clat * node_granularity + lat_offset) / long(1000000000),
             )
 
     def __parse_ways(self, pblock, data):
