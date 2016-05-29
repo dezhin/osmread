@@ -31,6 +31,6 @@ def main(argv=sys.argv):
             relation_count += 1
 
         if args.dump:
-            print repr(e)
+            print(repr(e))
 
-    print "%d elements read (nodes=%d, ways=%d, relations=%d)" % (element_count, node_count, way_count, relation_count)
+    print("%d elements read (nodes=%d, ways=%d, relations=%d)" % (element_count, node_count, way_count, relation_count))

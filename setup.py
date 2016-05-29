@@ -3,6 +3,11 @@ import sys
 import os
 
 version = '0.1'
+requirements = ['argparse', 'lxml']
+if sys.version_info > (3,):
+    requirements.append('protobuf==3.0.0b3')
+else:
+    requirements.append('protobuf')
 
 setup(name='osmread',
       version=version,
@@ -13,6 +18,7 @@ setup(name='osmread',
           "Operating System :: OS Independent",
           "License :: OSI Approved :: MIT License",
           "Programming Language :: Python :: 2.7",
+          "Programming Language :: Python :: 3",
           "Topic :: Software Development :: Libraries",
           "Topic :: Scientific/Engineering :: GIS",
       ],
@@ -23,12 +29,7 @@ setup(name='osmread',
       packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
       include_package_data=True,
       zip_safe=False,
-      install_requires=[
-          # -*- Extra requirements: -*-
-          'argparse',
-          'protobuf',
-          'lxml',
-      ],
+      install_requires=requirements,
       entry_points="""
       # -*- Entry points: -*-
       [console_scripts]
