@@ -110,7 +110,10 @@ class PbfParser(Parser):
                 version=e.info.version,
                 changeset=int(e.info.changeset),
                 timestamp=int(e.info.timestamp),
-                uid=e.info.uid,
+                try:
+                    uid=e.info.uid,
+                except:
+                    uid=0 #An obj can miss an uid (when anonymous edits were possible)
                 tags=self.__parse_tags(e, pblock),
                 lon=float(e.lon * granularity + lon_offset) / long(1000000000),
                 lat=float(e.lat * granularity + lat_offset) / long(1000000000),

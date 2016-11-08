@@ -62,7 +62,12 @@ class XmlParser(Parser):
                             tzinfo=None
                         )
                     ).total_seconds())
-                    _uid = int(attrs['uid'])
+
+                    try: #An object can miss an uid (when anonymous edits were possible)
+                        _uid = int(attrs['uid'])
+                    except:
+                        uid = 0
+
                     _tags = {}
 
                     if elem.tag == 'node':
