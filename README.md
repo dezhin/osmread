@@ -25,7 +25,7 @@ Simply run `setup.py` or use `pip` or `easy_install`.
         if isinstance(entity, Way) and 'highway' in entity.tags:
             highway_count += 1
 
-    print "%d highways found" % highway_count
+    print("%d highways found" % highway_count)
 
 All `Node`, `Way` and `Relation` instances have `id`, `version`, `changeset`,
 `timestamp`, `uid` and `tags` attributes. Node coordinates stored in `lon` and
