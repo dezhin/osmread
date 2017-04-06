@@ -106,7 +106,7 @@ class PbfParser(Parser):
 
         for e in data:
             try:
-                uid = e.info.uid,
+                uid = e.info.uid
             except:
                 uid = 0  # An obj can miss an uid (when anonymous edits were possible)
             yield Node(
