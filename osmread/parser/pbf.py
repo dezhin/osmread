@@ -105,15 +105,16 @@ class PbfParser(Parser):
         lat_offset = pblock.lat_offset
 
         for e in data:
+            try:
+                uid = e.info.uid,
+            except:
+                uid = 0  # An obj can miss an uid (when anonymous edits were possible)
             yield Node(
                 id=e.id,
                 version=e.info.version,
                 changeset=int(e.info.changeset),
                 timestamp=int(e.info.timestamp),
-                try:
-                    uid=e.info.uid,
-                except:
-                    uid=0 #An obj can miss an uid (when anonymous edits were possible)
+                uid = uid,
                 tags=self.__parse_tags(e, pblock),
                 lon=float(e.lon * granularity + lon_offset) / long(1000000000),
                 lat=float(e.lat * granularity + lat_offset) / long(1000000000),
