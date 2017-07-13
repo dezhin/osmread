@@ -1,7 +1,10 @@
 import sys
-from lxml.etree import iterparse
 from datetime import datetime
 from time import mktime
+try:
+    from lxml.etree import iterparse
+except ImportError:
+    from xml.etree.ElementTree import iterparse
 
 from osmread.parser import Parser
 from osmread.elements import Node, Way, Relation, RelationMember
