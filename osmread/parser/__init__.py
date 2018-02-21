@@ -11,6 +11,8 @@ class Parser(object):
     def parse_file(self, filename):
         if self._compression == 'bz2':
             fp = BZ2File(filename, 'r')
+        elif self._compression == 'gz':
+            fp = gzip.open(filename, 'r')
         else:
             fp = open(filename, 'rb')
 
