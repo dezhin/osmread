@@ -1,4 +1,5 @@
 from bz2 import BZ2File
+import gzip
 
 class Parser(object):
 
