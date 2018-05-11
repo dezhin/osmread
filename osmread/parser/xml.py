@@ -46,25 +46,33 @@ class XmlParser(Parser):
                 if elem.tag in ('node', 'way', 'relation'):
                     _id = long(attrs['id'])
                     _version = int(attrs['version'])
-                    _changeset = int(attrs['changeset'])
-                    # TODO: improve timestamp parsing - dateutil too slow
-                    _tstxt = attrs['timestamp']
-                    _timestamp = int((
-                        datetime(
-                            year=int(_tstxt[0:4]),
-                            month=int(_tstxt[5:7]),
-                            day=int(_tstxt[8:10]),
-                            hour=int(_tstxt[11:13]),
-                            minute=int(_tstxt[14:16]),
-                            second=int(_tstxt[17:19]),
-                            tzinfo=None
-                        ) - datetime(
-                            year=1970,
-                            month=1,
-                            day=1,
-                            tzinfo=None
-                        )
-                    ).total_seconds())
+
+                    try: # GeoFabrik's (May 2018) public snapshots strip the changeset attribute out of their data
+                        _changeset = int(attrs['changeset'])
+                    except:
+                        _changeset = 0
+
+                    try: # GeoFabrik's (May 2018) public snapshots strip timestamp attribute out of their data
+                        # TODO: improve timestamp parsing - dateutil too slow
+                        _tstxt = attrs['timestamp']
+                        _timestamp = int((
+                            datetime(
+                                year=int(_tstxt[0:4]),
+                                month=int(_tstxt[5:7]),
+                                day=int(_tstxt[8:10]),
+                                hour=int(_tstxt[11:13]),
+                                minute=int(_tstxt[14:16]),
+                                second=int(_tstxt[17:19]),
+                                tzinfo=None
+                            ) - datetime(
+                                year=1970,
+                                month=1,
+                                day=1,
+                                tzinfo=None
+                            )
+                        ).total_seconds())
+                    except:
+                        _timestamp = 0
 
                     try: #An object can miss an uid (when anonymous edits were possible)
                         _uid = int(attrs['uid'])
