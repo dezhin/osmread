@@ -109,10 +109,14 @@ class PbfParser(Parser):
                 uid = e.info.uid
             except:
                 uid = 0  # An obj can miss an uid (when anonymous edits were possible)
+            try:
+                cs = int(e.info.changeset)
+            except:
+                cs = 0 # GeoFabrik's (May 2018) public snapshots strip the changeset attribute out of their data
             yield Node(
                 id=e.id,
                 version=e.info.version,
-                changeset=int(e.info.changeset),
+                changeset=cs,
                 timestamp=int(e.info.timestamp),
                 uid = uid,
                 tags=self.__parse_tags(e, pblock),
