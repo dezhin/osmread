@@ -46,7 +46,12 @@ class XmlParser(Parser):
                 if elem.tag in ('node', 'way', 'relation'):
                     _id = long(attrs['id'])
                     _version = int(attrs['version'])
-                    _changeset = int(attrs['changeset'])
+
+                    try: # GeoFabrik's (May 2018) public snapshots strip the changeset attribute out of their data
+                        _changeset = int(attrs['changeset'])
+                    except:
+                        _changeset = 0
+
                     # TODO: improve timestamp parsing - dateutil too slow
                     _tstxt = attrs['timestamp']
                     _timestamp = int((
