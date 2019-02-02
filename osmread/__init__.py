@@ -5,7 +5,7 @@ def parse_file(filename, **kwargs):
     parser_cls = None
     kwargs = dict(kwargs)
 
-    if filename.endswith(('.osm', '.xml', '.osm.bz2', '.xml.bz2')) \
+    if filename.endswith(('.osm', '.xml', '.osm.bz2', '.xml.bz2', '.osm.gz', '.xml.gz')) \
             or kwargs.get('format', None) == 'xml':
 
         from osmread.parser.xml import XmlParser
@@ -13,6 +13,8 @@ def parse_file(filename, **kwargs):
 
         if filename.endswith('.bz2'):
             kwargs['compression'] = 'bz2'
+        elif filename.endswith('.gz'):
+            kwargs['compression'] = 'gz'
 
     elif filename.endswith('.pbf') \
             or kwargs.get('format', None) == 'pbf':
