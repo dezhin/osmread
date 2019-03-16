@@ -3,11 +3,7 @@ import sys
 import os
 
 version = '0.2'
-requirements = ['argparse', 'lxml']
-if sys.version_info > (3,):
-    requirements.append('protobuf==3.0.0b3')
-else:
-    requirements.append('protobuf')
+requirements = ['argparse', 'lxml', 'protobuf']
 
 setup(name='osmread',
       version=version,
